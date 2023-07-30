@@ -1,0 +1,41 @@
+require("dotenv").config(); // loading env variables
+import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+
+interface AuthenticatedRequest extends Request {
+  user?: any; // Adjust the type of the user property as needed (any for simplicity)
+}
+// MIDDLEWARE FOR AUTHORIZATION (MAKING SURE THEY ARE LOGGED IN)
+const isLoggedIn = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { SECRET = "IST69" } = process.env;
+  try {
+    // check if auth header exists
+    if (req.headers.authorization) {
+      // parse token from header
+      const token = req.headers.authorization.split(" ")[1]; //split the header and get the token
+      if (token) {
+        const payload = await jwt.verify(token, SECRET);
+        if (payload) {
+          // store user data in request object
+          req.user = payload;
+          next();
+        } else {
+          res.status(400).json({ error: "token verification failed" });
+        }
+      } else {
+        res.status(400).json({ error: "malformed auth header" });
+      }
+    } else {
+      res.status(400).json({ error: "No authorization header" });
+    }
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+};
+
+// export custom middleware
+export default isLoggedIn;
