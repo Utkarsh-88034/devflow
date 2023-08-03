@@ -11,12 +11,10 @@ const commentSchema = new Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Issue",
     },
-    userId: [
-      {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User",
-      },
-    ],
+    userId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "User",
+    },
     replies: [
       {
         type: mongoose.SchemaTypes.ObjectId,
@@ -29,6 +27,6 @@ const commentSchema = new Schema(
   }
 );
 
-const Comment = mongoose.model("Issue", commentSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 export default Comment;

@@ -1,9 +1,15 @@
 import cardbg1 from "../../assets/cardbg1.jpg";
 import cardbg2 from "../../assets/cardbg2.jpg";
 import cardbg4 from "../../assets/cardbg4.jpg";
-import cardbg3 from "../../assets/cardbg3.jpg";
 
-import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+import { CircularProgress } from "@chakra-ui/react";
+import { useQuery } from "@apollo/client";
+import {
+  GET_CLOSED_ISSUES,
+  GET_ISSUES,
+  GET_OPEN_ISSUES,
+  GET_PROJECTS,
+} from "../../Queries/dashboardQueries";
 
 interface CustomCSSProperties extends React.CSSProperties {
   "--image-url": string;
@@ -11,7 +17,7 @@ interface CustomCSSProperties extends React.CSSProperties {
 }
 
 const ApplicationSummaryCard: React.FC<{
-  number: string;
+  number: number;
   title: string;
   styleClass?: string;
   bg?: string;
@@ -25,9 +31,7 @@ const ApplicationSummaryCard: React.FC<{
     "--height": large ? "250px" : "200px",
   };
 
-  const breakGreen = 20;
-  const breakYellow = 50;
-  const percent = (parseInt(number) / max) * 100;
+  const percent = (number / max) * 100;
   let color = "green";
 
   if (reverse) {
@@ -59,7 +63,7 @@ const ApplicationSummaryCard: React.FC<{
         trackColor="transparent"
         capIsRound={true}
         max={max}
-        value={parseInt(number)}
+        value={number}
         style={{ position: "absolute" }}
         size={(chartSize && `${chartSize}px`) || "200px"}
         thickness={"5px"}
@@ -86,11 +90,44 @@ const RecentActivityCard: React.FC<{
 };
 
 const DashboardOverview = () => {
+  const projectQuery = useQuery(GET_PROJECTS);
+  const issuesQuery = useQuery(GET_ISSUES);
+  const openIssuesQuery = useQuery(GET_OPEN_ISSUES);
+  const closedIssuesQuery = useQuery(GET_CLOSED_ISSUES);
+
+  const IssueData = issuesQuery.data;
+  const ProjectData = projectQuery.data;
+  const OpenIssueData = openIssuesQuery.data;
+  const ClosedIssueData = closedIssuesQuery.data;
+
+  if (
+    projectQuery.loading ||
+    issuesQuery.loading ||
+    openIssuesQuery.loading ||
+    closedIssuesQuery.loading
+  ) {
+    return (
+      <div className="h-screen w-screen flex justify-center items-center">
+        <CircularProgress isIndeterminate trackColor="transparent" />
+      </div>
+    );
+  } else if (
+    projectQuery.error ||
+    issuesQuery.error ||
+    openIssuesQuery.error ||
+    closedIssuesQuery.error
+  ) {
+    return (
+      <div className="h-screen w-screen flex justify-center items-center">
+        <CircularProgress isIndeterminate trackColor="transparent" />
+      </div>
+    );
+  }
   return (
     <div className="h-screen flex-grow py-5 overflow-y-auto">
       <div className="w-full  px-5 flex flex-wrap gap-5">
         <ApplicationSummaryCard
-          number="7"
+          number={ProjectData.AllProjects.length}
           title="Projects"
           styleClass={`w-[50%]`}
           bg={cardbg1}
@@ -99,19 +136,19 @@ const DashboardOverview = () => {
           large
         />
         <ApplicationSummaryCard
-          number="15"
+          number={IssueData.AllIssues.length}
           title="Issues"
           max={30}
           bg={cardbg4}
         />
         <ApplicationSummaryCard
-          number="14"
+          number={OpenIssueData.IssueByQuery.length}
           title="Open Issues"
           bg={cardbg2}
           max={30}
         />
         <ApplicationSummaryCard
-          number="6"
+          number={ClosedIssueData.IssueByQuery.length}
           title="Closed Issues"
           max={15}
           reverse={true}

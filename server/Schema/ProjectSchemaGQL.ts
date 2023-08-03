@@ -1,32 +1,18 @@
 import {
   GraphQLID,
   GraphQLList,
+  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
 } from "graphql";
 
-import { getAllProjects, getProjectById } from "../Controller/project";
-import { UserType } from "./UserSchemaGQL";
-import { getUserById } from "../Controller/user";
-
-const ProjectType = new GraphQLObjectType({
-  name: "Project",
-  fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    description: { type: GraphQLString },
-    status: { type: GraphQLString },
-    startDate: { type: GraphQLString },
-    endDate: { type: GraphQLString },
-    projectManager: {
-      type: UserType,
-      resolve: (parent: any, args: any) => {
-        return getUserById(parent.projectManagerId);
-      },
-    },
-    team: { type: new GraphQLList(UserType) },
-  }),
-});
+import {
+  createNewProject,
+  deleteProject,
+  getAllProjects,
+  getProjectById,
+} from "../Controller/project";
+import { ProjectType } from "../Types/projectType";
 
 //types
 
@@ -46,5 +32,28 @@ export const projectById = {
   },
   resolve(parent: any, args: any) {
     return getProjectById(args.id);
+  },
+};
+
+export const newProject = {
+  type: ProjectType,
+  args: {
+    name: { type: GraphQLNonNull(GraphQLString) },
+    description: { type: GraphQLNonNull(GraphQLString) },
+    projectManagerId: { type: GraphQLNonNull(GraphQLID) },
+    status: { type: GraphQLNonNull(GraphQLString) },
+  },
+  resolve(parent: any, args: any) {
+    return createNewProject(args);
+  },
+};
+
+export const deleteProjectById = {
+  type: ProjectType,
+  args: {
+    id: { type: GraphQLNonNull(GraphQLID) },
+  },
+  resolve(parent: any, args: any) {
+    return deleteProject(args.id);
   },
 };

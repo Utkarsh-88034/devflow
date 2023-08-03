@@ -19,6 +19,10 @@ const issueSchema = new Schema(
       type: String,
       required: true,
     },
+    project: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Project",
+    },
     assignee: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "User",

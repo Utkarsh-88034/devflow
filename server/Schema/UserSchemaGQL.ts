@@ -1,22 +1,13 @@
+import bcrypt from "bcryptjs";
 import {
   GraphQLID,
   GraphQLList,
+  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
 } from "graphql";
-import { getAllUsers, getUserById } from "../Controller/user";
-
-export const UserType = new GraphQLObjectType({
-  name: "User",
-  fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    email: { type: GraphQLString },
-    password: { type: GraphQLString },
-    userName: { type: GraphQLString },
-    role: { type: GraphQLString },
-  }),
-});
+import { getAllUsers, getUserById, registerNewUser } from "../Controller/user";
+import { UserType } from "../Types/userType";
 
 //types
 
@@ -38,5 +29,19 @@ export const userById = {
   },
   resolve(parent: any, args: any) {
     return getUserById(args.name);
+  },
+};
+
+export const registerUser = {
+  type: UserType,
+  args: {
+    name: { type: GraphQLNonNull(GraphQLString) },
+    email: { type: GraphQLNonNull(GraphQLString) },
+    password: { type: GraphQLNonNull(GraphQLString) },
+    userName: { type: GraphQLNonNull(GraphQLString) },
+    role: { type: GraphQLNonNull(GraphQLString) },
+  },
+  resolve(parent: any, args: any) {
+    return registerNewUser(args);
   },
 };

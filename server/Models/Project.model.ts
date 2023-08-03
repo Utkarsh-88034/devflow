@@ -31,10 +31,12 @@ const projectSchema = new Schema(
     endDate: {
       type: Date,
     },
-    issues: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "Issue",
-    },
+    issues: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Issue",
+      },
+    ],
   },
   {
     timestamps: true,

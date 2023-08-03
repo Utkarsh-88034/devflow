@@ -9,3 +9,12 @@ export const getProjectById = async (id: string) => {
   const res = await Project.findById(id);
   return res;
 };
+
+export const createNewProject = async (args: any) => {
+  const res = await Project.create(args);
+  return res;
+};
+
+export const deleteProject = async (id: string) => {
+  const res = await Project.findByIdAndRemove(id);
+};
