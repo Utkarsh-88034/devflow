@@ -14,6 +14,7 @@ export const getIssueById = async (id: string) => {
 
 export const createNewIssue = async (args: any) => {
   const res = await Issue.create(args);
+  console.log("args:", args);
   const newProject = await Project.findByIdAndUpdate(
     args.project,
     {

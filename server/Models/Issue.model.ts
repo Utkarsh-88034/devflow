@@ -17,7 +17,6 @@ const issueSchema = new Schema(
     },
     priority: {
       type: String,
-      required: true,
     },
     project: {
       type: mongoose.SchemaTypes.ObjectId,
@@ -43,6 +42,24 @@ const issueSchema = new Schema(
         ref: "Attachment",
       },
     ],
+    errorMessage: {
+      type: String,
+    },
+    stackTrace: {
+      type: String,
+    },
+    environment: {
+      type: String,
+    },
+    errorType: {
+      type: String,
+    },
+    errorLocation: {
+      type: String,
+    },
+    additionalContext: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,6 @@
 import {
   GraphQLID,
+  GraphQLInputObjectType,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -43,16 +44,31 @@ export const issueById = {
   },
 };
 
+const AdditionalContextType = new GraphQLInputObjectType({
+  name: "AdditionalContext",
+  description: "Input type for additional context data",
+  fields: {
+    type: { type: GraphQLString },
+    data: { type: GraphQLString },
+    // Define other fields as needed
+  },
+});
 export const newIssue = {
   type: IssueType,
   args: {
     title: { type: GraphQLNonNull(GraphQLString) },
     description: { type: GraphQLNonNull(GraphQLString) },
-    priority: { type: GraphQLNonNull(GraphQLString) },
-    assignee: { type: GraphQLNonNull(GraphQLID) },
-    status: { type: GraphQLNonNull(GraphQLString) },
-    reportedBy: { type: GraphQLNonNull(GraphQLID) },
+    priority: { type: GraphQLString },
+    assignee: { type: GraphQLID },
+    status: { type: GraphQLString },
+    reportedBy: { type: GraphQLID },
     project: { type: GraphQLNonNull(GraphQLID) },
+    errorMessage: { type: GraphQLNonNull(GraphQLString) },
+    stackTrace: { type: GraphQLNonNull(GraphQLString) },
+    environment: { type: GraphQLNonNull(GraphQLString) },
+    errorType: { type: GraphQLNonNull(GraphQLString) },
+    errorLocation: { type: GraphQLNonNull(GraphQLString) },
+    additionalContext: { type: GraphQLString },
   },
   resolve(parent: any, args: any) {
     return createNewIssue(args);

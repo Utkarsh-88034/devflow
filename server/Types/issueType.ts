@@ -36,5 +36,11 @@ export const IssueType: GraphQLObjectType<any, any> = new GraphQLObjectType({
         return getProjectById(parent.project);
       },
     },
+    errorMessage: { type: GraphQLString },
+    stackTrace: { type: GraphQLString },
+    environment: { type: GraphQLString },
+    appVersion: { type: GraphQLString },
+    additionalContext: { type: GraphQLString },
+    errorLocation: { type: GraphQLString },
   }),
 });

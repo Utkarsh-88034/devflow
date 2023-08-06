@@ -4,6 +4,8 @@ import Dashboard from "./Views/Dashboard";
 import Login from "./Views/Login";
 import { Routes, Route } from "react-router-dom";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import ProjectsOverview from "./Components/Projects/ProjectsOverview";
+import IssueList from "./Components/Issues/IssueList";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
@@ -25,10 +27,21 @@ function App() {
               </Dashboard>
             }
           />
-          <Route path="/projects" element={<Dashboard>Projects</Dashboard>} />
+          <Route
+            path="/projects"
+            element={
+              <Dashboard>
+                <ProjectsOverview />
+              </Dashboard>
+            }
+          />
           <Route
             path="/open-issues"
-            element={<Dashboard>Open Issues</Dashboard>}
+            element={
+              <Dashboard>
+                <IssueList />
+              </Dashboard>
+            }
           />
           <Route path="/my-issues" element={<Dashboard>My Issue</Dashboard>} />
           <Route
