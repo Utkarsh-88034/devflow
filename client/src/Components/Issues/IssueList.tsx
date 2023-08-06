@@ -200,6 +200,7 @@ const IssueList = () => {
     console.log(first);
   } catch (error: any) {
     captureGeneralError(error);
+    // generateIssueDetails(error, {}, "Standard Error");
   }
 
   return (

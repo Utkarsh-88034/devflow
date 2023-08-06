@@ -18,8 +18,7 @@ export const DevFlowProvider: React.FC<{
     captureAJAXError: sdk.captureAJAXError,
     captureUIInterfaceError: sdk.captureUIInterfaceError,
     captureFromInputError: sdk.captureFromInputError,
-    apiKey: sdk.apiKey,
-    generateIssueDetails: sdk.generateIssueDetails
+    apiKey: sdk.apiKey
     // Add more methods here
   }
   return (
