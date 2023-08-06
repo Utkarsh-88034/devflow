@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import ProjectsOverview from "./Components/Projects/ProjectsOverview";
 import IssueList from "./Components/Issues/IssueList";
+import { DevFlowProvider } from "sdk-devflow";
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
@@ -15,42 +16,47 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="h-screen w-screen flex justify-center items-center relative">
-        <Routes>
-          <Route path="/login" element={<Login type="login" />} />
-          <Route path="/register" element={<Login type="register" />} />
-          <Route
-            path="/dashboard"
-            element={
-              <Dashboard>
-                <DashboardOverview />
-              </Dashboard>
-            }
-          />
-          <Route
-            path="/projects"
-            element={
-              <Dashboard>
-                <ProjectsOverview />
-              </Dashboard>
-            }
-          />
-          <Route
-            path="/open-issues"
-            element={
-              <Dashboard>
-                <IssueList />
-              </Dashboard>
-            }
-          />
-          <Route path="/my-issues" element={<Dashboard>My Issue</Dashboard>} />
-          <Route
-            path="/search-issues"
-            element={<Dashboard>Search Result</Dashboard>}
-          />
-          <Route path="/profile" element={<Dashboard>Profile</Dashboard>} />
-        </Routes>
-      </div>
+      <DevFlowProvider apiKey={"123"}>
+        <div className="h-screen w-screen flex justify-center items-center relative">
+          <Routes>
+            <Route path="/login" element={<Login type="login" />} />
+            <Route path="/register" element={<Login type="register" />} />
+            <Route
+              path="/dashboard"
+              element={
+                <Dashboard>
+                  <DashboardOverview />
+                </Dashboard>
+              }
+            />
+            <Route
+              path="/projects"
+              element={
+                <Dashboard>
+                  <ProjectsOverview />
+                </Dashboard>
+              }
+            />
+            <Route
+              path="/open-issues"
+              element={
+                <Dashboard>
+                  <IssueList />
+                </Dashboard>
+              }
+            />
+            <Route
+              path="/my-issues"
+              element={<Dashboard>My Issue</Dashboard>}
+            />
+            <Route
+              path="/search-issues"
+              element={<Dashboard>Search Result</Dashboard>}
+            />
+            <Route path="/profile" element={<Dashboard>Profile</Dashboard>} />
+          </Routes>
+        </div>
+      </DevFlowProvider>
     </ApolloProvider>
   );
 }

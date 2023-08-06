@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 
-import { GET_ISSUES, GET_ISSUE_BY_ID } from "../../Queries/dashboardQueries";
+import { GET_ISSUES } from "../../Queries/dashboardQueries";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionPanel,
 } from "@chakra-ui/react";
+import { useDevFlow } from "sdk-devflow";
 interface IssueCardProps {
   issue: IssueType;
 }
@@ -186,12 +187,20 @@ const IssueCard: React.FC<IssueCardProps> = ({ issue }) => {
 };
 
 const IssueList = () => {
+  const { captureGeneralError } = useDevFlow();
+
   const { loading, error, data } = useQuery(GET_ISSUES);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   const issueList = data.AllIssues;
+
+  try {
+    console.log(first);
+  } catch (error: any) {
+    captureGeneralError(error);
+  }
 
   return (
     <div className="h-screen flex-grow  flex flex-col items-center p-5 overflow-scroll gap-10 ">
