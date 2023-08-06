@@ -26,8 +26,15 @@ export const GET_PROJECTS = gql`
 export const GET_ISSUES = gql`
   query issues {
     AllIssues {
-      title
       id
+      description
+      title
+      stackTrace
+      errorMessage
+      environment
+      appVersion
+      additionalContext
+      errorLocation
     }
   }
 `;

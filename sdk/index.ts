@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { request, gql } = require("graphql-request");
-const api = "http://localhost:5000/graphql/";
+const api = "http://localhost/5000/graphql/";
 
 const projectId = "64c89fc4eb520a12abee5383";
 const data = {
@@ -15,7 +15,7 @@ const data = {
 
 const getIssues = gql`
   {
-    112AllIssues {
+    AllIssues {
       title
       id
     }
@@ -120,7 +120,7 @@ const generateIssueDetails = (error, data, type) => {
 
   const sendInfo = async () => {
     try {
-      const res = request(api, query, variables);
+      const res = request("http://localhost:5000/graphql", query, variables);
     } catch (error) {
       console.log(error);
     }
